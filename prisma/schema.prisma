@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  STAFF
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id             String    @id @default(uuid())
+  name           String?
+  email          String    @unique
+  password       String
+  role           String    @default("USER")
+  phone          String?   @unique
+  address        String?
+  resetOtp       String?
+  resetOtpExpiry DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  orders  Order[]
+  reviews Review[] // <-- Tambahkan baris ini
+}
+
+model Product {
+  id                 String      @id @default(uuid())
+  name               String
+  brand              String
+  price              Int
+  stock              Int
+  description        String?
+  imageUrl           String
+  colors             String[]    @default([])
+  customVariantTitle String?
+  customVariants     String[]    @default([])
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  orderItems         OrderItem[]
+  reviews            Review[]    // <-- Tambahkan relasi ini
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalAmount     Int
+  status          String      @default("PENDING")
+  paymentMethod   String      @default("ONLINE") // "ONLINE" atau "COD"
+  courier         String?
+  trackingNumber  String?
+  shippingAddress String?
+  snapToken       String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items           OrderItem[]
+  reviews         Review[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String?  // Opsional: link ke produk spesifik atau otomatis link ke produk di order
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rating    Int      @default(5)
+  comment   String?
+  createdAt DateTime @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Int
+  color     String? // Varian warna yang dipilih
+  motor     String? // Tipe motor/bracket
+  discSize  String? // Ukuran piringan disc brake (jika ada)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}
