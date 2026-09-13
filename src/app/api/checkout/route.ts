@@ -12,17 +12,32 @@ const snap = new midtransclient.Snap({
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    const userId = (session?.user as any)?.id;
+
+    // 1. Validasi session dan session.user eksplisit untuk mencegah error "Possibly null"
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Harap login terlebih dahulu.' },
+        { status: 401 }
+      );
+    }
+
+    const userId = (session.user as any)?.id;
 
     if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized. Harap login terlebih dahulu.' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'User ID tidak ditemukan. Harap login ulang.' },
+        { status: 401 }
+      );
     }
 
     const body = await req.json();
     const { items, shippingAddress, courier, paymentMethod, shippingCost = 0 } = body;
 
     if (!items || items.length === 0) {
-      return NextResponse.json({ error: 'Keranjang belanja kosong' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Keranjang belanja kosong' },
+        { status: 400 }
+      );
     }
 
     const subtotal = items.reduce(
@@ -33,7 +48,7 @@ export async function POST(req: Request) {
 
     const isCOD = paymentMethod === 'COD';
 
-    // 1. COD
+    // 2. Transaksi COD
     if (isCOD) {
       const codOrder = await prisma.order.create({
         data: {
@@ -60,7 +75,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // 2. Non-Tunai (Midtrans)
+    // 3. Transaksi Non-Tunai (Midtrans)
     const order = await prisma.order.create({
       data: {
         userId,
@@ -85,8 +100,8 @@ export async function POST(req: Request) {
         gross_amount: totalAmount,
       },
       customer_details: {
-        first_name: session.user?.name || 'Customer',
-        email: session.user?.email || 'customer@vtx.com',
+        first_name: session.user.name || 'Customer',
+        email: session.user.email || 'customer@vtx.com',
       },
     };
 

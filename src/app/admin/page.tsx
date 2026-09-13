@@ -688,16 +688,18 @@ function AdminContent() {
   <div className="flex flex-col sm:flex-row items-center justify-end gap-1.5">
     {/* Tombol Edit */}
     <button
-      onClick={() => handleEdit(product)}
+      type="button"
+      onClick={() => handleOpenEditProduct(p)}
       className="p-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-lg border border-zinc-700/60 transition"
       title="Edit Part CNC"
     >
       <Edit3 className="w-4 h-4 text-blue-400" />
     </button>
 
-    {/* Tombol Hapus */}
+    {/* Tombol Hapus (Kirimkan 2 argumen: p.id dan p.name) */}
     <button
-      onClick={() => handleDelete(product.id)}
+      type="button"
+      onClick={() => handleDeleteProduct(p.id, p.name)}
       className="p-2 bg-zinc-800/80 hover:bg-red-950/60 text-zinc-300 hover:text-red-400 rounded-lg border border-zinc-700/60 hover:border-red-800 transition"
       title="Hapus Part CNC"
     >

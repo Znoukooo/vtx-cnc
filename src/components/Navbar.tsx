@@ -43,7 +43,7 @@ function NavbarContent() {
     >
       <div
         suppressHydrationWarning
-        className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"
+        className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"
       >
         {/* SISI KIRI: BRAND LOGO */}
         <div className="flex items-center gap-6">
@@ -124,7 +124,7 @@ function NavbarContent() {
                 <div className="flex items-center gap-1.5 bg-red-950/70 border border-red-800 text-red-300 px-2.5 py-1 rounded-lg text-xs font-bold">
                   <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
                   <span className="hidden sm:inline truncate max-w-[120px]">
-                    {session.user?.name || 'Super Admin'}
+                    {session?.user?.name || 'Super Admin'}
                   </span>
                 </div>
 
@@ -142,15 +142,16 @@ function NavbarContent() {
             <>
               <Link
                 href="/staff"
-                className="flex items-center gap-1.5 bg-amber-950/80 border border-amber-800 text-amber-400 px-3 py-1.5 rounded-lg font-bold"
+                className="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-amber-950/80 border border-amber-800 text-amber-400 hover:bg-amber-900/80 transition flex items-center gap-1.5 font-bold shrink-0"
+                title="Staff Fulfillment Desk"
               >
-                <Truck className="w-3.5 h-3.5" />
-                <span>Staff Fulfillment Desk</span>
+                <Truck className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="hidden sm:inline">Staff Fulfillment Desk</span>
               </Link>
 
               <div className="flex items-center gap-2 pl-2 border-l border-zinc-800">
                 <span className="text-zinc-400 text-xs hidden sm:inline">
-                  {session.user?.name}
+                  {session?.user?.name || 'Staff'}
                 </span>
                 <button
                   onClick={() => signOut({ callbackUrl: '/login' })}
@@ -168,7 +169,7 @@ function NavbarContent() {
                 Katalog
               </Link>
 
-              {session ? (
+              {session?.user ? (
                 <>
                   <Link
                     href="/orders"
@@ -184,13 +185,14 @@ function NavbarContent() {
                   >
                     <User className="w-3.5 h-3.5 text-red-500" />
                     <span className="font-bold truncate max-w-[120px]">
-                      {session.user?.name || 'Profil'}
+                      {session.user.name || 'Profil'}
                     </span>
                   </Link>
 
                   <button
                     onClick={() => signOut({ callbackUrl: '/' })}
                     className="flex items-center gap-1 text-zinc-400 hover:text-red-500 transition px-2 py-1"
+                    title="Keluar"
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
