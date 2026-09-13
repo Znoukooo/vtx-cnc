@@ -18,7 +18,7 @@ import {
   Trash2,
   UserPlus,
   KeyRound,
-  Edit3
+  Edit3,
 } from 'lucide-react';
 
 const BRAND_OPTIONS = ['VTX', 'Brembo', 'WR3', 'KTC', 'Nissin', 'RCB', 'Accossato'];
@@ -351,11 +351,11 @@ function AdminContent() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 text-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 text-white">
       {/* Header Halaman & Tab Switcher */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-black tracking-tight">Admin Console</h1>
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">Admin Console</h1>
           <p className="text-xs text-zinc-400 mt-1">
             Ringkasan analitik bisnis, manajemen akun staf/admin, dan master katalog CNC.
           </p>
@@ -394,7 +394,7 @@ function AdminContent() {
                   <DollarSign className="w-4 h-4" />
                 </div>
               </div>
-              <p className="text-3xl font-black text-white mt-3">
+              <p className="text-2xl sm:text-3xl font-black text-white mt-3">
                 Rp {stats.revenue.toLocaleString('id-ID')}
               </p>
               <span className="text-[11px] text-zinc-500 mt-2 block">
@@ -409,7 +409,7 @@ function AdminContent() {
                   <ShoppingBag className="w-4 h-4" />
                 </div>
               </div>
-              <p className="text-3xl font-black text-white mt-3">{stats.totalOrders} Pesanan</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-3">{stats.totalOrders} Pesanan</p>
               <span className="text-[11px] text-zinc-500 mt-2 block">
                 Semua transaksi tercatat di database VTX
               </span>
@@ -422,7 +422,7 @@ function AdminContent() {
                   <Users className="w-4 h-4" />
                 </div>
               </div>
-              <p className="text-3xl font-black text-white mt-3">{stats.totalUsers} Akun</p>
+              <p className="text-2xl sm:text-3xl font-black text-white mt-3">{stats.totalUsers} Akun</p>
               <div className="flex items-center gap-3 mt-3 text-[11px] text-zinc-400">
                 <span className="text-red-400 font-semibold">{stats.adminCount} Admin</span>
                 <span>•</span>
@@ -433,7 +433,7 @@ function AdminContent() {
             </div>
           </div>
 
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-zinc-800/80">
               <div>
                 <h2 className="text-lg font-bold">Data Pengguna & Hak Akses</h2>
@@ -470,7 +470,6 @@ function AdminContent() {
                   ))}
                 </div>
 
-                {/* Tombol Tambah Akun Baru */}
                 <button
                   onClick={() => setIsAddUserModalOpen(true)}
                   className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 transition shadow-lg shadow-red-600/20"
@@ -527,35 +526,33 @@ function AdminContent() {
                           {u.orders?.length || 0}
                         </td>
                         <td className="p-3.5 text-right">
-  <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-1.5">
-    {/* Atas di HP / Kiri di Desktop */}
-    <button
-      onClick={() => setSelectedUser(u)}
-      className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition"
-      title="Lihat Detail Pesanan & Profil"
-    >
-      <Eye className="w-3.5 h-3.5 text-blue-400" />
-    </button>
-
-    {/* Tengah di HP / Tengah di Desktop */}
-    <button
-      onClick={() => handleOpenEditUser(u)}
-      className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition"
-      title="Edit Data & Password"
-    >
-      <Edit2 className="w-3.5 h-3.5 text-amber-400" />
-    </button>
-
-    {/* Bawah di HP / Kanan di Desktop */}
-    <button
-      onClick={() => handleDeleteUser(u.id, u.name || u.email)}
-      className="p-1.5 bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-400 rounded-lg transition"
-      title="Hapus Akun"
-    >
-      <Trash2 className="w-3.5 h-3.5" />
-    </button>
-  </div>
-</td>
+                          <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setSelectedUser(u)}
+                              className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition"
+                              title="Lihat Detail Pesanan & Profil"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-blue-400" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditUser(u)}
+                              className="p-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition"
+                              title="Edit Data & Password"
+                            >
+                              <Edit2 className="w-3.5 h-3.5 text-amber-400" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteUser(u.id, u.name || u.email)}
+                              className="p-1.5 bg-zinc-800 hover:bg-red-950 text-zinc-400 hover:text-red-400 rounded-lg transition"
+                              title="Hapus Akun"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -568,7 +565,7 @@ function AdminContent() {
 
       {/* ================= TAB 2: MASTER PRODUCTS (CRUD) ================= */}
       {activeTab === 'PRODUCTS' && (
-        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-zinc-800/80">
             <div>
               <h2 className="text-lg font-bold flex items-center gap-2">
@@ -685,28 +682,26 @@ function AdminContent() {
                         </div>
                       </td>
                       <td className="p-3.5 text-right">
-  <div className="flex flex-col sm:flex-row items-center justify-end gap-1.5">
-    {/* Tombol Edit */}
-    <button
-      type="button"
-      onClick={() => handleOpenEditProduct(p)}
-      className="p-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-lg border border-zinc-700/60 transition"
-      title="Edit Part CNC"
-    >
-      <Edit3 className="w-4 h-4 text-blue-400" />
-    </button>
+                        <div className="flex flex-col sm:flex-row items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditProduct(p)}
+                            className="p-2 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-lg border border-zinc-700/60 transition"
+                            title="Edit Part CNC"
+                          >
+                            <Edit3 className="w-4 h-4 text-blue-400" />
+                          </button>
 
-    {/* Tombol Hapus (Kirimkan 2 argumen: p.id dan p.name) */}
-    <button
-      type="button"
-      onClick={() => handleDeleteProduct(p.id, p.name)}
-      className="p-2 bg-zinc-800/80 hover:bg-red-950/60 text-zinc-300 hover:text-red-400 rounded-lg border border-zinc-700/60 hover:border-red-800 transition"
-      title="Hapus Part CNC"
-    >
-      <Trash2 className="w-4 h-4 text-zinc-400 hover:text-red-400" />
-    </button>
-  </div>
-</td>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProduct(p.id, p.name)}
+                            className="p-2 bg-zinc-800/80 hover:bg-red-950/60 text-zinc-300 hover:text-red-400 rounded-lg border border-zinc-700/60 hover:border-red-800 transition"
+                            title="Hapus Part CNC"
+                          >
+                            <Trash2 className="w-4 h-4 text-zinc-400 hover:text-red-400" />
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -887,7 +882,6 @@ function AdminContent() {
                 />
               </div>
 
-              {/* Input Ubah Password */}
               <div className="bg-zinc-950 border border-amber-900/40 p-3 rounded-xl">
                 <label className="text-amber-400 font-bold flex items-center gap-1.5 mb-1">
                   <KeyRound className="w-3.5 h-3.5" />
