@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function AuthPage() {
+function AuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
@@ -38,7 +38,6 @@ export default function AuthPage() {
         setError('Email atau password salah. Silakan coba lagi.');
         setLoading(false);
       } else {
-        // Redirect aman ke target URL atau beranda
         const target = callbackUrl && callbackUrl !== '/login' ? callbackUrl : '/';
         window.location.href = target;
       }
@@ -69,7 +68,6 @@ export default function AuthPage() {
 
       setSuccess('Akun berhasil dibuat! Sedang masuk...');
 
-      // Login otomatis setelah akun terbuat
       const loginRes = await signIn('credentials', {
         email,
         password,
@@ -153,13 +151,15 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-zinc-300 block mb-1.5">Password</label>
-              <Link
-    href="/forgot-password"
-    className="text-[11px] text-red-500 hover:underline font-semibold"
-  >
-    Lupa Password?
-  </Link>
+              <div className="flex justify-between items-center mb-1.5">
+                <label className="text-xs font-semibold text-zinc-300">Password</label>
+                <Link
+                  href="/forgot-password"
+                  className="text-[11px] text-red-500 hover:underline font-semibold"
+                >
+                  Lupa Password?
+                </Link>
+              </div>
               <input
                 type="password"
                 required
@@ -250,5 +250,19 @@ export default function AuthPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[85vh] flex items-center justify-center text-zinc-500 text-xs font-mono">
+          Memuat halaman otentikasi...
+        </div>
+      }
+    >
+      <AuthContent />
+    </Suspense>
   );
 }
