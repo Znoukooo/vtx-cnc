@@ -1,13 +1,17 @@
 'use client';
 
 import React from 'react';
-import { SessionProvider } from 'next-auth/react';
+import dynamic from 'next/dynamic';
+
+const ClientSessionProvider = dynamic(
+  () => import('next-auth/react').then((mod) => mod.SessionProvider),
+  { ssr: false }
+);
 
 export default function Providers({ children }: { children: React.ReactNode }) {
-  // Mencegah SessionProvider mengevaluasi URL kosong/invalid saat SSR/prerender build
   return (
-    <SessionProvider basePath="/api/auth">
+    <ClientSessionProvider>
       {children}
-    </SessionProvider>
+    </ClientSessionProvider>
   );
 }
